@@ -8,8 +8,6 @@ export interface AuthUser {
   role: "USER" | "ADMIN";
 }
 
-
-
 export function verifyToken(token: string): AuthUser {
     
  return jwt.verify(token, config.jwt_secret as string) as AuthUser;
