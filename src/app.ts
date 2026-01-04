@@ -99,14 +99,17 @@ import { AuthUser, verifyToken } from "./auth/verifyToken";
 const app: Application = express();
 app.use(express.json());
 
+// ✅ Use process.cwd() to locate schema
 const typeDefs = gql(
-  readFileSync(path.join(__dirname, "schema/post.graphql"), "utf-8")
+  readFileSync(path.resolve(process.cwd(), "src/schema/post.graphql"), "utf-8")
 );
 
+// ✅ Simple health check
 app.get("/", (_req: Request, res: Response) => {
   res.send({ message: "Apollo Post Server is running..." });
 });
 
+// ✅ Wrap ApolloServer startup in async function
 async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs,
@@ -115,12 +118,13 @@ async function startApolloServer() {
 
   await server.start();
 
+  // ✅ Attach Apollo middleware
   app.use(
     "/graphql",
     cors({
       origin: [
         "http://localhost:3000",
-        "https://your-frontend.vercel.app",
+        "https://your-frontend.vercel.app", // frontend URL
       ],
       credentials: true,
     }),
