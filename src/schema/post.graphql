@@ -1,0 +1,170 @@
+type Query {
+  posts: [Post!]!
+  post(id: ID!): Post
+  users: [User!]!
+  user(id: ID!): User
+}
+
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+type Post {
+    id: ID!
+    title: String!
+    description: String!
+    status: PostStatus
+    # userId: ID!
+    # user:User
+}
+
+  enum UserRole {
+    ADMIN
+    USER
+  }
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+    role: UserRole!
+  }
+
+
+
+
+
+input CreatePostInput {
+    title: String!
+    description: String!
+    status: PostStatus
+    # userId: ID!
+}
+
+input UpdatePostInput {
+   title: String
+    description: String
+    status: PostStatus
+}
+
+  input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  role: UserRole
+  contactNumber: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  password: String
+  role: UserRole
+  contactNumber: String
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!): Post!
+  updatePost(id: ID!, input: UpdatePostInput!): Post!
+  deletePost(id: ID!): Boolean!
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): Boolean!
+}
+
+
+# mutation  {
+#   createReview(
+#     input: {
+#       comment: "Nice post"
+#       rating: 5
+#       postId: 10
+#       userId: 3
+#     }
+#   ) {
+#     id
+#     comment
+#     rating
+#   }
+# }
+
+
+# mutation {
+#   updateReview(
+#     id: "2"
+#     input: {
+#       comment: "Updated comment"
+#       rating: 4
+#     }
+#   ) {
+#     id
+#     comment
+#     rating
+#   }
+# }
+
+
+# mutation {
+#   deleteReview(id: "2" ) 
+# }
+
+
+
+
+# extend schema
+#   @link(
+#     url: "https://specs.apollo.dev/federation/v2.7", 
+#     import: ["@key","@external","@shareable"]
+#   )
+
+# type Query {
+#   reviews: [Review!]!
+#   review(id: ID!): Review
+# }
+
+# type Review @key(fields: "id") {
+#   id: ID! @shareable
+#   comment: String!
+#   rating: Int!
+#   # userId: ID!
+#   # postId: ID!
+#   # user: User
+#   # post: Post
+#   isDelete: Boolean
+# }
+
+# # # Extend User and Post from other subgraphs
+# # extend type User @key(fields: "id") {
+# #   id: ID! @external
+# #   reviewsByUser: [Review]! @shareable
+# # }
+
+# # extend type Post @key(fields: "id") {
+# #   id: ID! @external
+# #   reviewsForPost: [Review]! @shareable
+# # }
+
+# # input CreateReviewInput {
+# #   comment: String!
+# #   rating: Int!
+# #   postId: ID!
+# #   userId: ID!
+# # }
+
+# # input UpdateReviewInput {
+# #   comment: String
+# #   rating: Int
+# # }
+
+# # type Mutation {
+# #   createReview(input: CreateReviewInput!): Review!
+# #   updateReview(id: ID!, input: UpdateReviewInput!): Review!
+# #   deleteReview(id: ID!): Boolean!
+# # }
+
+
+
